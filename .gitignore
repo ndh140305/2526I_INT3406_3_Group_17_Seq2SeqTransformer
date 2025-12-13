@@ -1,0 +1,32 @@
+# Data files
+data/raw/*.tgz
+data/extracted/*.en
+data/extracted/*.vi
+data/processed/*.npy
+data/processed/*.model
+data/processed/*.vocab
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Models & checkpoints
+checkpoints/
+*.pt
+*.pth
