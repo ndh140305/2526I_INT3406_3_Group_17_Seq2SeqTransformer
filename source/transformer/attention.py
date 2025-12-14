@@ -11,10 +11,18 @@ class ScaledDotProductAttention(nn.Module):
 	def forward(self, Q: torch.Tensor, K: torch.Tensor, V: torch.Tensor, mask: torch.Tensor | None = None):
 		d_k = Q.size(-1)
 		scores = torch.matmul(Q, K.transpose(-2, -1)) / math.sqrt(d_k)
+		
+        #QK ^ T độ tương đồng chia cho căn tránh softmax bão hòa khi d lớn
+		
 		if mask is not None:
 			scores = scores.masked_fill(mask == 0, float('-inf'))
+			
+        #áp 0 cho các vị trí có mask
+		
 		attn = F.softmax(scores, dim=-1)
 		attn = self.dropout(attn)
+		
+        #Tắt trọng số bất kỳ để giảm over fit
 		output = torch.matmul(attn, V)
 		return output, attn
 
