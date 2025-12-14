@@ -3,7 +3,6 @@ import math
 from typing import List, Tuple
 from collections import Counter
 
-
 def greedy_decode(
     model,
     src_ids: torch.Tensor,

@@ -28,8 +28,8 @@ def main():
     parser.add_argument("--target_mask", default=None)
     parser.add_argument("--pad_token_id", type=int, default=0)
     parser.add_argument("--batch_size", type=int, default=32)
-    parser.add_argument("--epochs", type=int, default=1)
-    parser.add_argument("--lr", type=float, default=3e-4)
+    parser.add_argument("--epochs", type=int, default=20)
+    parser.add_argument("--lr", type=float, default=1e-4)
     parser.add_argument("--warmup_steps", type=int, default=400)
     parser.add_argument("--val_ratio", type=float, default=0.05)
     parser.add_argument("--d_model", type=int, default=512)
@@ -40,6 +40,8 @@ def main():
     parser.add_argument("--dropout", type=float, default=0.1)
     parser.add_argument("--bos_token_id", type=int, default=1)
     parser.add_argument("--eos_token_id", type=int, default=2)
+    parser.add_argument("--resume_checkpoint", default=None, help="Path to checkpoint to resume from")
+    parser.add_argument("--start_epoch", type=int, default=1, help="Starting epoch number")
     args = parser.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -86,6 +88,15 @@ def main():
         dropout=args.dropout,
         max_seq_len=max_seq_len,
     )
+    
+    if args.resume_checkpoint:
+        print(f"\n📂 Resuming from checkpoint: {args.resume_checkpoint}")
+        checkpoint = torch.load(args.resume_checkpoint, map_location=device)
+        if isinstance(checkpoint, dict) and 'model_state_dict' in checkpoint:
+            model.load_state_dict(checkpoint['model_state_dict'])
+        else:
+            model.load_state_dict(checkpoint)
+        print(f"✓ Checkpoint loaded. Starting from epoch {args.start_epoch}")
 
     metrics_history = run_training(
         model,

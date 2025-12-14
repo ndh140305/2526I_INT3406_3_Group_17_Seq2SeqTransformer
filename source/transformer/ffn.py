@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
 
-
 class FeedForwardNetwork(nn.Module):
 	def __init__(self, d_model: int, d_ff: int, dropout: float = 0.1):
 		super().__init__()

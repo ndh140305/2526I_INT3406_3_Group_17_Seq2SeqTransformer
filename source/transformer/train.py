@@ -7,7 +7,6 @@ from .transformer import Transformer
 from .loss import sequence_cross_entropy
 from .evaluate import compute_bleu, compute_gemini_score, greedy_decode, beam_search
 
-
 class WarmupScheduler:
 	def __init__(self, optimizer, warmup_steps: int, base_lr: float):
 		self.optimizer = optimizer
@@ -58,7 +57,6 @@ def train_one_epoch(model, dataloader, optimizer, scheduler, pad_token_id: int, 
 			print(f"step {steps}: loss={loss.item():.4f}")
 
 	return total_loss / max(steps, 1)
-
 
 def evaluate(model, dataloader, pad_token_id: int, device: torch.device, compute_bleu_score: bool = False, bos_token_id: int = 1, eos_token_id: int = 2):
 	model.eval()
