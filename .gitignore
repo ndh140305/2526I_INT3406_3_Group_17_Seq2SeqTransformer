@@ -5,6 +5,11 @@ data/extracted/*.vi
 data/processed/*.npy
 data/processed/*.model
 data/processed/*.vocab
+data/processed/train_*.npy
+data/processed/train_*.mask
+data/processed/*.txt
+data/extracted/**
+data/raw/**
 
 # Python
 __pycache__/
@@ -30,6 +35,33 @@ Thumbs.db
 checkpoints/
 *.pt
 *.pth
+training/checkpoints/
+training/metrics.json
+training/plots/
+training/comparison_report.md
+training/**
+
+# Debug / reports / docs
+data_report.py
+debug_output.py
+PROJECT_CHECKLIST.md
+TRAINING_SUMMARY.md
+REPORTING_GUIDE.md
+generate_report.py
+plot_results.py
+
+# Inference script
+/inference.py
+
+# Requirements snapshots
+requirements.txt
+
+# Reports & Scripts
+report_notebook.ipynb
+REPORTING_GUIDE.md
+generate_report.py
+plot_results.py
 
 # Tests
 tests/
+inference.py

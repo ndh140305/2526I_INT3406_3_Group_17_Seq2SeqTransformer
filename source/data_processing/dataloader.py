@@ -3,7 +3,6 @@ import numpy as np
 from torch.utils.data import Dataset, DataLoader
 from typing import Tuple, Dict
 
-
 class TranslationDataset(Dataset):
     def __init__(self, source_ids: np.ndarray, target_ids: np.ndarray, 
                  source_mask: np.ndarray, target_mask: np.ndarray):
@@ -38,11 +37,11 @@ class TranslationDataset(Dataset):
 def create_dataloader(source_ids: np.ndarray, target_ids: np.ndarray,
                      source_mask: np.ndarray, target_mask: np.ndarray,
                      batch_size: int = 32, shuffle: bool = True, 
-                     num_workers: int = 0) -> DataLoader:
+                     num_workers: int = 0, pin_memory: bool = False) -> DataLoader:
     try:
         dataset = TranslationDataset(source_ids, target_ids, source_mask, target_mask)
         dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=shuffle, 
-                               num_workers=num_workers, pin_memory=True)
+                       num_workers=num_workers, pin_memory=pin_memory)
         
         print(f"Created DataLoader with {len(dataset)} samples, batch_size={batch_size}")
         return dataloader

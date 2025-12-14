@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
-from attention import MultiHeadAttention
-from ffn import FeedForwardNetwork
+from .attention import MultiHeadAttention
+from .ffn import FeedForwardNetwork
 
 class DecoderLayer(nn.Module):
 	def __init__(self, d_model: int, num_heads: int, d_ff: int, dropout: float = 0.1):
