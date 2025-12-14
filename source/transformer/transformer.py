@@ -6,7 +6,6 @@ from .embedding import InputEmbeddings, PositionalEncoding
 from .encoder import EncoderStack
 from .decoder import DecoderStack
 
-
 def create_padding_mask(mask: torch.Tensor) -> torch.Tensor:
 	if mask.dim() != 2:
 		raise ValueError("Padding mask must have shape (batch, seq_len)")

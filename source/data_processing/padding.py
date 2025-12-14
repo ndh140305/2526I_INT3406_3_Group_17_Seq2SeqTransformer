@@ -1,7 +1,6 @@
 import numpy as np
 from typing import List, Tuple
 
-
 def pad_and_create_mask(id_list: List[List[int]], pad_id: int = 0) -> Tuple[np.ndarray, np.ndarray]:
     try:
         if not id_list:

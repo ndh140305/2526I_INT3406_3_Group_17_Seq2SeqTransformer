@@ -23,10 +23,8 @@ class WarmupScheduler:
 				param_group["lr"] = lr
 		self.optimizer.step()
 
-
 def shift_target(tgt_ids: torch.Tensor):
 	return tgt_ids[:, :-1], tgt_ids[:, 1:]
-
 
 def train_one_epoch(model, dataloader, optimizer, scheduler, pad_token_id: int, device: torch.device, log_every: int = 100):
 	model.train()
@@ -42,7 +40,7 @@ def train_one_epoch(model, dataloader, optimizer, scheduler, pad_token_id: int, 
 
 		decoder_input, decoder_target = shift_target(tgt_ids)
 		decoder_input_mask = tgt_mask[:, :-1]
-		# Forward
+		
 		logits = model(src_ids, decoder_input, src_mask=src_mask, tgt_mask=decoder_input_mask)
 		loss = sequence_cross_entropy(logits, decoder_target, pad_token_id)
 
@@ -81,7 +79,7 @@ def evaluate(model, dataloader, pad_token_id: int, device: torch.device, compute
 			total_loss += loss.item()
 			steps += 1
 			
-			# Compute BLEU if requested
+		
 			if compute_bleu_score:
 				for ref, hyp in zip(decoder_target.cpu().numpy().tolist(), torch.argmax(logits, dim=-1).cpu().numpy().tolist()):
 					all_references.append(ref)
@@ -98,10 +96,8 @@ def evaluate(model, dataloader, pad_token_id: int, device: torch.device, compute
 	
 	return avg_loss, bleu_score, gemini_score, perplexity
 
-
 def build_optimizer(model, lr: float = 3e-4, weight_decay: float = 0.0):
 	return optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay, betas=(0.9, 0.98))
-
 
 def run_training(
 	model: Transformer,
@@ -121,7 +117,6 @@ def run_training(
 	optimizer = build_optimizer(model, lr=lr)
 	scheduler = WarmupScheduler(optimizer, warmup_steps=warmup_steps, base_lr=lr)
 	
-	# Create checkpoint dir
 	Path(checkpoint_dir).mkdir(parents=True, exist_ok=True)
 	Path(metrics_file).parent.mkdir(parents=True, exist_ok=True)
 	
@@ -144,26 +139,24 @@ def run_training(
 		
 		print(f"Epoch {epoch}: train_loss={train_loss:.4f}, val_loss={val_loss:.4f}, val_bleu={val_bleu:.4f}, val_gemini={val_gemini:.4f}, perplexity={val_perplexity:.4f}")
 		
-		# Save checkpoint
-		ckpt_path = Path(checkpoint_dir) / f"model_epoch_{epoch}.pth"
-		torch.save({
-			"epoch": epoch,
-			"model_state_dict": model.state_dict(),
-			"optimizer_state_dict": optimizer.state_dict(),
-			"train_loss": train_loss,
-			"val_loss": val_loss,
-			"val_bleu": val_bleu,
-			"val_gemini": val_gemini,
-			"val_perplexity": val_perplexity,
-		}, ckpt_path)
-		print(f"Checkpoint saved to {ckpt_path}")
+		if epoch % 5 == 0 or epoch == epochs:
+			ckpt_path = Path(checkpoint_dir) / f"model_epoch_{epoch}.pth"
+			torch.save({
+				"epoch": epoch,
+				"model_state_dict": model.state_dict(),
+				"optimizer_state_dict": optimizer.state_dict(),
+				"train_loss": train_loss,
+				"val_loss": val_loss,
+				"val_bleu": val_bleu,
+				"val_gemini": val_gemini,
+				"val_perplexity": val_perplexity,
+			}, ckpt_path)
+			print(f"Checkpoint saved to {ckpt_path}")
 	
-	# Save best model (last epoch)
 	best_model_path = Path(checkpoint_dir) / "best_model.pth"
 	torch.save(model.state_dict(), best_model_path)
 	print(f"Best model saved to {best_model_path}")
 	
-	# Save metrics
 	with open(metrics_file, "w") as f:
 		json.dump(metrics_history, f, indent=2)
 	print(f"Metrics saved to {metrics_file}")

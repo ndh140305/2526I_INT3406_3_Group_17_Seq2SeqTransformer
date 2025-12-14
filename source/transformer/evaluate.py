@@ -29,9 +29,8 @@ def greedy_decode(
             tgt_mask = torch.ones_like(ys, device=device)
             if (next_token == eos_token_id).all():
                 break
-
+            
     return ys
-
 
 def beam_search(
     model,

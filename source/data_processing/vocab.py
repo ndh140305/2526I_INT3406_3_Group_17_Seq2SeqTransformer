@@ -2,7 +2,6 @@ from typing import Dict
 
 import sentencepiece as spm
 
-
 def build_vocab(sp: spm.SentencePieceProcessor) -> Dict[str, int]:
     if not isinstance(sp, spm.SentencePieceProcessor):
         raise TypeError("sp must be a SentencePieceProcessor instance")

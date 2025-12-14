@@ -33,7 +33,6 @@ class TranslationDataset(Dataset):
             'target_mask': self.target_mask[idx]
         }
 
-
 def create_dataloader(source_ids: np.ndarray, target_ids: np.ndarray,
                      source_mask: np.ndarray, target_mask: np.ndarray,
                      batch_size: int = 32, shuffle: bool = True, 

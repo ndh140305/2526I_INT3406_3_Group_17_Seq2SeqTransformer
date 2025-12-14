@@ -1,7 +1,6 @@
 import re
 from typing import List, Tuple
 
-
 def clean_data(source_list: List[str], target_list: List[str], max_len: int = 100) -> Tuple[List[str], List[str]]:
     try:
         if not isinstance(source_list, list) or not isinstance(target_list, list):
@@ -57,7 +56,6 @@ def clean_data(source_list: List[str], target_list: List[str], max_len: int = 10
     except Exception as e:
         print(f"Unexpected error during cleaning: {e}")
         raise
-
 
 def _check_balanced_brackets(text: str) -> bool:
     brackets = {'(': ')', '[': ']', '{': '}', '"': '"', "'": "'"}

@@ -2,7 +2,6 @@ from typing import List, Tuple
 
 import sentencepiece as spm
 
-
 def convert_to_ids(
     tokenized_source: List[List[str]],
     tokenized_target: List[List[str]],

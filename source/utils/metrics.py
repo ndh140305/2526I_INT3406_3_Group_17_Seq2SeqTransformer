@@ -1,7 +1,6 @@
 import numpy as np
 from typing import List, Dict
 
-
 def report_data_statistics(source_list: List[str], target_list: List[str], source_vocab: Dict, target_vocab: Dict) -> None:
     try:
         if not source_list or not target_list:

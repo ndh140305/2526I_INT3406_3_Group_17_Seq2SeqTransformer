@@ -26,7 +26,6 @@ class ScaledDotProductAttention(nn.Module):
 		output = torch.matmul(attn, V)
 		return output, attn
 
-
 class MultiHeadAttention(nn.Module):
 	def __init__(self, d_model: int, num_heads: int, dropout: float = 0.1):
 		super().__init__()

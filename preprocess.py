@@ -8,7 +8,6 @@ from source.data_processing.convert import convert_to_ids
 from source.data_processing.padding import pad_and_create_mask
 from source.utils.metrics import report_data_statistics
 
-
 def run_preprocessing_pipeline(tgz_path: str, extract_path: str, processed_path: str, vocab_size: int = 32000):
     os.makedirs(processed_path, exist_ok=True)
     
@@ -41,7 +40,6 @@ def run_preprocessing_pipeline(tgz_path: str, extract_path: str, processed_path:
     report_data_statistics(source, target, source_vocab, target_vocab)
     
     print("Preprocessing pipeline finished. Processed files saved in:", processed_path)
-
 
 if __name__ == "__main__":
     tgz_path = "data/raw/train-en-vi.tgz"

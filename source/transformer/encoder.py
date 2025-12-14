@@ -16,7 +16,6 @@ class EncoderLayer(nn.Module):
 		#ffn
 		return x
 
-
 class EncoderStack(nn.Module):
 	def __init__(self, d_model: int, num_heads: int, d_ff: int, num_layers: int, dropout: float = 0.1):
 		super().__init__()

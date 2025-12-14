@@ -28,15 +28,15 @@ def main():
     parser.add_argument("--target_mask", default=None)
     parser.add_argument("--pad_token_id", type=int, default=0)
     parser.add_argument("--batch_size", type=int, default=32)
-    parser.add_argument("--epochs", type=int, default=20)
-    parser.add_argument("--lr", type=float, default=1e-4)
-    parser.add_argument("--warmup_steps", type=int, default=400)
+    parser.add_argument("--epochs", type=int, default=3)
+    parser.add_argument("--lr", type=float, default=3e-4)
+    parser.add_argument("--warmup_steps", type=int, default=500)
     parser.add_argument("--val_ratio", type=float, default=0.05)
-    parser.add_argument("--d_model", type=int, default=512)
+    parser.add_argument("--d_model", type=int, default=256)
     parser.add_argument("--num_heads", type=int, default=8)
-    parser.add_argument("--num_encoder_layers", type=int, default=6)
-    parser.add_argument("--num_decoder_layers", type=int, default=6)
-    parser.add_argument("--d_ff", type=int, default=2048)
+    parser.add_argument("--num_encoder_layers", type=int, default=4)
+    parser.add_argument("--num_decoder_layers", type=int, default=4)
+    parser.add_argument("--d_ff", type=int, default=1024)
     parser.add_argument("--dropout", type=float, default=0.1)
     parser.add_argument("--bos_token_id", type=int, default=1)
     parser.add_argument("--eos_token_id", type=int, default=2)
@@ -90,7 +90,7 @@ def main():
     )
     
     if args.resume_checkpoint:
-        print(f"\n📂 Resuming from checkpoint: {args.resume_checkpoint}")
+        print(f"\n Resuming from checkpoint: {args.resume_checkpoint}")
         checkpoint = torch.load(args.resume_checkpoint, map_location=device)
         if isinstance(checkpoint, dict) and 'model_state_dict' in checkpoint:
             model.load_state_dict(checkpoint['model_state_dict'])
@@ -123,7 +123,6 @@ def main():
         print(f"  Epoch {metric['epoch']}: train_loss={metric['train_loss']:.4f}, val_loss={metric['val_loss']:.4f}")
         print(f"    BLEU={metric['val_bleu']:.4f}, Gemini={metric['val_gemini']:.4f}, Perplexity={metric['val_perplexity']:.4f}")
     print("="*60)
-
 
 if __name__ == "__main__":
     main()

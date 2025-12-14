@@ -2,7 +2,6 @@ import os
 import sentencepiece as spm
 from typing import List, Tuple
 
-
 def train_sentencepiece(sentences: List[str], model_prefix: str, vocab_size: int = 32000) -> spm.SentencePieceProcessor:
     try:
         if not sentences:
@@ -57,7 +56,6 @@ def train_sentencepiece(sentences: List[str], model_prefix: str, vocab_size: int
     except Exception as e:
         print(f"Unexpected error in train_sentencepiece: {e}")
         raise
-
 
 def tokenize_data(sp: spm.SentencePieceProcessor, sentences: List[str]) -> List[List[str]]:
     try:

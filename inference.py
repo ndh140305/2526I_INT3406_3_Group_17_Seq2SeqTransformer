@@ -123,9 +123,9 @@ def main():
     print("Model loaded successfully!")
     
     decode_method = "Beam Search" if args.beam_search else "Greedy"
-    print(f"🔍 Decoding method: {decode_method}")
+    print(f"Decoding method: {decode_method}")
     if args.beam_search:
-        print(f"   Beam width: {args.beam_width}")
+        print(f"  Beam width: {args.beam_width}")
     
     print("\n" + "="*60)
     print("TRANSFORMER TRANSLATION")
@@ -159,7 +159,6 @@ def main():
     
     print("\n" + "="*60)
     print(" Done!")
-
 
 if __name__ == "__main__":
     main()

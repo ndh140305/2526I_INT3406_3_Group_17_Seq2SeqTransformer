@@ -3,11 +3,9 @@ import numpy as np
 import torch
 import os
 from pathlib import Path
-
 from source.transformer.transformer import Transformer
 from source.transformer.train import run_training
 from source.data_processing.dataloader import create_dataloader
-
 
 def build_masks(ids: np.ndarray, pad_id: int) -> np.ndarray:
     return (ids != pad_id).astype(np.int64)
@@ -20,7 +18,6 @@ def split_train_val(src_ids, tgt_ids, src_mask, tgt_mask, val_ratio=0.05):
         (src_ids[:split], tgt_ids[:split], src_mask[:split], tgt_mask[:split]),
         (src_ids[split:], tgt_ids[split:], src_mask[split:], tgt_mask[split:]),
     )
-
 
 def main():
     parser = argparse.ArgumentParser(description='Resume training from checkpoint')
@@ -98,7 +95,7 @@ def main():
     tgt_vocab_size = state_dict['tgt_embed.embedding.weight'].shape[0]
     max_seq_len = state_dict['pos_encoding.pe'].shape[1]
 
-    print(f"✓ Checkpoint architecture:")
+    print(f"  Checkpoint architecture:")
     print(f"  src_vocab: {src_vocab_size}, tgt_vocab: {tgt_vocab_size}")
     print(f"  max_seq_len: {max_seq_len}")
 
@@ -116,7 +113,7 @@ def main():
     ).to(device)
 
     model.load_state_dict(state_dict)
-    print(f"✓ Model loaded with checkpoint weights")
+    print(f"  Model loaded with checkpoint weights")
 
     print(f"\nResuming training for {args.epochs} more epochs...")
     print(f"  Learning rate: {args.lr}")
