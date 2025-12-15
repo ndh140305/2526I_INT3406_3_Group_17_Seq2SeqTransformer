@@ -1,4 +1,5 @@
 # Data files
+*.zip
 data/raw/*.tgz
 data/extracted/*.en
 data/extracted/*.vi

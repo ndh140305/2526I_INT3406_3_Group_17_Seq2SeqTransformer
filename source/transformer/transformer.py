@@ -11,7 +11,6 @@ def create_padding_mask(mask: torch.Tensor) -> torch.Tensor:
 		raise ValueError("Padding mask must have shape (batch, seq_len)")
 	return mask.unsqueeze(1).unsqueeze(1)
 
-
 def create_causal_mask(size: int, device: torch.device | None = None) -> torch.Tensor:
 	mask = torch.tril(torch.ones(size, size, device=device))
 	return mask.unsqueeze(0).unsqueeze(0)

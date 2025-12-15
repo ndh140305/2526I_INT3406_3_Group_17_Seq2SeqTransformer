@@ -1,6 +1,7 @@
 import torch
 import torch.optim as optim
 import json
+from datetime import datetime
 from pathlib import Path
 
 from .transformer import Transformer
@@ -112,6 +113,7 @@ def run_training(
 	checkpoint_dir: str = "training/checkpoints",
 	metrics_file: str = "training/metrics.json",
 	compute_bleu: bool = True,
+	run_id: str | None = None,
 ):
 	model.to(device)
 	optimizer = build_optimizer(model, lr=lr)
@@ -119,6 +121,12 @@ def run_training(
 	
 	Path(checkpoint_dir).mkdir(parents=True, exist_ok=True)
 	Path(metrics_file).parent.mkdir(parents=True, exist_ok=True)
+
+	if run_id is None:
+		run_id = datetime.now().strftime("%Y%m%d_%H%M%S")
+	log_dir = Path(checkpoint_dir).parent / "logs"
+	log_dir.mkdir(parents=True, exist_ok=True)
+	run_log_path = log_dir / f"run_{run_id}.json"
 	
 	metrics_history = []
 
@@ -139,7 +147,7 @@ def run_training(
 		
 		print(f"Epoch {epoch}: train_loss={train_loss:.4f}, val_loss={val_loss:.4f}, val_bleu={val_bleu:.4f}, val_gemini={val_gemini:.4f}, perplexity={val_perplexity:.4f}")
 		
-		if epoch % 5 == 0 or epoch == epochs:
+		if epoch % 3 == 0 or epoch == epochs:
 			ckpt_path = Path(checkpoint_dir) / f"model_epoch_{epoch}.pth"
 			torch.save({
 				"epoch": epoch,
@@ -152,14 +160,18 @@ def run_training(
 				"val_perplexity": val_perplexity,
 			}, ckpt_path)
 			print(f"Checkpoint saved to {ckpt_path}")
-	
-	best_model_path = Path(checkpoint_dir) / "best_model.pth"
-	torch.save(model.state_dict(), best_model_path)
-	print(f"Best model saved to {best_model_path}")
+
+			best_model_path = Path(checkpoint_dir) / "best_model.pth"
+			torch.save(model.state_dict(), best_model_path)
+			print(f"best_model.pth updated at epoch {epoch}")
 	
 	with open(metrics_file, "w") as f:
 		json.dump(metrics_history, f, indent=2)
 	print(f"Metrics saved to {metrics_file}")
+
+	with open(run_log_path, "w") as f:
+		json.dump(metrics_history, f, indent=2)
+	print(f"Run log saved to {run_log_path}")
 	
 	return metrics_history
 
