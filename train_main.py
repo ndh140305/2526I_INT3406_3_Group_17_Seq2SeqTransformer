@@ -28,7 +28,7 @@ def main():
     parser.add_argument("--target_mask", default=None)
     parser.add_argument("--pad_token_id", type=int, default=0)
     parser.add_argument("--batch_size", type=int, default=32)
-    parser.add_argument("--epochs", type=int, default=3)
+    parser.add_argument("--epochs", type=int, default=30)
     parser.add_argument("--lr", type=float, default=3e-4)
     parser.add_argument("--warmup_steps", type=int, default=500)
     parser.add_argument("--val_ratio", type=float, default=0.05)
